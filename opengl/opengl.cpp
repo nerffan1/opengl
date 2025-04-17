@@ -44,7 +44,7 @@ GLfloat vertices[] = {
 };
 
 GLuint EBO, rectVAO = 0, rectVBO = 0;
-GLfloat rectangle[] = {
+GLfloat rectangle[]  {
      0.5f,  0.5f, 0.0f,  // top right
      0.5f, -0.5f, 0.0f,  // bottom right
     -0.5f, -0.5f, 0.0f,  // bottom left
