@@ -1,12 +1,12 @@
 #pragma once
 #include "Actor.h"
+#include <vector>
 
-class Triangle :
-    public Actor
+class Triangle : public Actor
 {
-    Triangle()
-    {
+    Triangle();
+	void vertexSpecify() override;
 
-    }
+
 };
 
