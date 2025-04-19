@@ -8,6 +8,7 @@
 
 //Namespaces
 using Actor_ptr = std::unique_ptr<Actor> ;
+using Actor_vec = std::vector<Actor_ptr>;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void drawTriangles(std::vector<Actor_ptr> &actors);
@@ -150,7 +151,7 @@ int main()
 
 // process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
 // ---------------------------------------------------------------------------------------------------------
-void processInput(GLFWwindow* window)
+void processInput(GLFWwindow* window, Actor_vec &actors)
 {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
@@ -174,13 +175,13 @@ void processInput(GLFWwindow* window)
         r = fmaxf(r - 0.0005f, 0.0f); // Decrease color, clamp to 0.0
 
     if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
-        vertices[0] += .001;
+		actors[0]->move(.001f, 0.0f); 
     if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
-        vertices[0] -= .001;
+		actors[0]->move(-.001f, 0.0f); 
     if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
-        vertices[1] += .001;
+		actors[0]->move(0.0f, .001f); 
     if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
-        vertices[1] -= .001;
+		actors[0]->move(0.0f, -.001f); 
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
@@ -219,6 +220,7 @@ void drawTriangles(std::vector<Actor_ptr> &actors)
     //Draw actors
     for (auto& actor : actors)
     {
+        actor->update();
         actor->draw();
     }
 }
@@ -251,8 +253,7 @@ void mainLoop(GLFWwindow* &window)
     {
         // input
         // -----
-        processInput(window);
-        updateVertexData();
+        processInput(window, actors);
 
         // render Commands here
         // ------

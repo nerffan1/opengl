@@ -10,5 +10,5 @@ void Actor::draw()
 {
     glBindVertexArray(vao);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glDrawArrays(GL_POINTS, 0, vertCount);
+    glDrawArrays(GL_TRIANGLES, 0, vertCount);
 }
