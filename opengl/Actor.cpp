@@ -1,4 +1,5 @@
 #include "Actor.h"
+#include <iostream>
 
 
 Actor::Actor()

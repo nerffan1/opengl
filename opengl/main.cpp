@@ -1,13 +1,22 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
+#include "Actor.h"
+#include "Triangle.h"
+#include <vector>
+#include <memory>
+
+//Namespaces
+using Actor_ptr = std::unique_ptr<Actor> ;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+void drawTriangles(std::vector<Actor_ptr> &actors);
 void processInput(GLFWwindow* window);
 void mainLoop(GLFWwindow* &window);
 void vertexSpecify();
 void specifyRectangle();
 GLFWwindow* initWindow();
+
 
 
 
@@ -54,6 +63,7 @@ GLuint indices[] = {  // note that we start from 0!
     0, 1, 3,   // first triangle
     1, 2, 3    // second triangle
 };
+
 
 
 GLuint CompileShader(GLuint type, const std::string&  source){
@@ -117,7 +127,7 @@ int main()
     // glfw window creation
     GLFWwindow* window = initWindow();
     //vertexSpecify();
-    specifyRectangle();
+    //specifyRectangle();
     createGraphicsPipeline();
 
     // glad: load all OpenGL function pointers
@@ -190,6 +200,7 @@ void preDraw() {
     glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
 	glClearColor(r, g, b, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
+    glPointSize(20);
 
     glUseProgram(gGraphicsPipelineShaderProgram);
 
@@ -200,6 +211,16 @@ void draw() {
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glPointSize(20);
     glDrawArrays(GL_POINTS, 0, 3);
+
+}
+
+void drawTriangles(std::vector<Actor_ptr> &actors)
+{
+    //Draw actors
+    for (auto& actor : actors)
+    {
+        actor->draw();
+    }
 }
 
 void drawRect() {
@@ -221,6 +242,11 @@ void updateVertexData() {
 
 void mainLoop(GLFWwindow* &window)
 {
+    //Test Triangle pointers and vector
+	std::vector<Actor_ptr> actors;
+	actors.push_back(std::make_unique<Triangle>());
+
+    //Loop!
     while (!glfwWindowShouldClose(window))
     {
         // input
@@ -231,7 +257,9 @@ void mainLoop(GLFWwindow* &window)
         // render Commands here
         // ------
         preDraw();
-        drawRect();
+        //drawRect();
+        //draw();
+        drawTriangles(actors);
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------

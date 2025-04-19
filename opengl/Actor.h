@@ -6,8 +6,8 @@ class Actor
 public:
 	Actor();
 	virtual void draw();
-	virtual void loadVerts() = 0;
 	virtual void vertexSpecify() = 0;
+	virtual void update() = 0;
 
 protected:
 	std::vector<GLfloat> vertices;
