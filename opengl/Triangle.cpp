@@ -9,7 +9,13 @@ Triangle::Triangle()
 	});
 	vertexSpecify();
 	vertCount = 3;
-};
+}
+Triangle::Triangle(glm::vec3 colour)
+{
+	Triangle();
+	color = colour;
+}
+;
 
 
 void Triangle::vertexSpecify()
@@ -19,7 +25,7 @@ void Triangle::vertexSpecify()
 	// Vertex buffer
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices.data(), GL_DYNAMIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_DYNAMIC_DRAW);
 	// Vertex attributes
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
@@ -30,7 +36,7 @@ void Triangle::vertexSpecify()
 void Triangle::update()
 {
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices.data());
+    glBufferSubData(GL_ARRAY_BUFFER, 0, vertices.size() * sizeof(float), vertices.data());
 }
 
 void Triangle::move(GLfloat x, GLfloat y, GLfloat z = 0.0f)

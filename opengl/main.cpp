@@ -40,8 +40,8 @@ const char* fragmentSource = "#version 460 core\n"
 "}\n\0";
 
 // settings/globals
-const unsigned int SCR_WIDTH = 800;
-const unsigned int SCR_HEIGHT = 600;
+const unsigned int SCR_WIDTH = 1200;
+const unsigned int SCR_HEIGHT = 1200;
 float r = 0.0f;
 float g = 0.0f;
 float b = 0.0f;

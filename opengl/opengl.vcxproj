@@ -74,6 +74,10 @@
     <LibraryPath>C:\glad\src;C:\GLFW\lib;C:\GLFW\include;$(LibraryPath);$(SolutionDir)\Linking\lib;</LibraryPath>
     <IncludePath>C:\glad\include;C:\GLFW\include;$(IncludePath);$(SolutionDir)\Linking\include;</IncludePath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>C:\glad\include;C:\GLFW\include;$(IncludePath);$(SolutionDir)\Linking\include;</IncludePath>
+    <LibraryPath>C:\glad\src;C:\GLFW\lib;C:\GLFW\include;$(LibraryPath);$(SolutionDir)\Linking\lib;</LibraryPath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -129,6 +133,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
