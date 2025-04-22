@@ -12,5 +12,6 @@ public:
 	
 	//Movement
 	void move(GLfloat x, GLfloat y, GLfloat z);
+	std::vector<GLuint> color;
 };
 

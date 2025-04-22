@@ -5,7 +5,9 @@
 #include "Triangle.h"
 #include <vector>
 #include <memory>
+#include <glm/vec3.hpp>
 
+glm::vec3 aa;
 //Namespaces
 using Actor_ptr = std::unique_ptr<Actor> ;
 using Actor_vec = std::vector<Actor_ptr>;
@@ -43,6 +45,7 @@ const unsigned int SCR_HEIGHT = 600;
 float r = 0.0f;
 float g = 0.0f;
 float b = 0.0f;
+size_t actor_i = 1;
 GLuint vao = 0;
 GLuint vbo = 0;
 GLuint gGraphicsPipelineShaderProgram = 0;
@@ -174,14 +177,18 @@ void processInput(GLFWwindow* window, Actor_vec &actors)
     if (glfwGetKey(window, GLFW_KEY_DELETE) == GLFW_PRESS)
         r = fmaxf(r - 0.0005f, 0.0f); // Decrease color, clamp to 0.0
 
+    if (glfwGetKey(window, GLFW_KEY_0) == GLFW_PRESS)
+        actor_i = 0;
+    if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
+        actor_i = 1;
     if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
-		actors[0]->move(.001f, 0.0f); 
+		actors[actor_i]->move(.001f, 0.0f); 
     if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
-		actors[0]->move(-.001f, 0.0f); 
+		actors[actor_i]->move(-.001f, 0.0f); 
     if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
-		actors[0]->move(0.0f, .001f); 
+		actors[actor_i]->move(0.0f, .001f); 
     if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
-		actors[0]->move(0.0f, -.001f); 
+		actors[actor_i]->move(0.0f, -.001f); 
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
@@ -246,6 +253,7 @@ void mainLoop(GLFWwindow* &window)
 {
     //Test Triangle pointers and vector
 	std::vector<Actor_ptr> actors;
+	actors.push_back(std::make_unique<Triangle>());
 	actors.push_back(std::make_unique<Triangle>());
 
     //Loop!
