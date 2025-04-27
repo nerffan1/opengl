@@ -3,18 +3,22 @@
 #include <vector>
 #include "glad/glad.h"
 #include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include <glm/glm.hpp>
 
 class Triangle : public Actor
 {
 public:
     Triangle();
-    Triangle(glm::vec3 color);
+	Triangle(std::vector<glm::vec3> colour);
 	void vertexSpecify() override;
 	void update() override;
 	
 	//Movement
 	void move(GLfloat x, GLfloat y, GLfloat z);
-	glm::vec3 color;
+	std::vector<glm::vec3> color;
+
+	//Render Udate
+	void colorUpdate();
 };
 

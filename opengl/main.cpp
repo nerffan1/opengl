@@ -20,9 +20,6 @@ void vertexSpecify();
 void specifyRectangle();
 GLFWwindow* initWindow();
 
-
-
-
 // Shader sources
 const GLchar* vertexSource = R"glsl(
 #version 460 core
@@ -30,6 +27,29 @@ in vec4 position;
 void main()
 {
 	gl_Position = vec4(position);
+})glsl";
+
+const GLchar* vertexSource_w_color = R"glsl(
+#version 460 core
+layout(location = 0) in vec3 vertex_position;
+layout(location = 1) in vec3 vertex_colour;
+
+out vec3 colour;
+
+void main() {
+  colour = vertex_colour;
+  gl_Position = vec4(vertex_position, 1.0);
+})glsl";
+
+const char* frag_colorinput = R"glsl(
+#version 460 core
+
+in vec3 colour;
+out vec4 FragColor;
+
+void main()
+{
+   FragColor = vec4(colour, 1.0);
 })glsl";
 
 const char* fragmentSource = "#version 460 core\n"
@@ -116,7 +136,7 @@ GLuint createShaderProgram(const std::string& vertexshadersource,
 
 void createGraphicsPipeline()
 {
-    gGraphicsPipelineShaderProgram = createShaderProgram(vertexSource, fragmentSource);
+    gGraphicsPipelineShaderProgram = createShaderProgram(vertexSource_w_color, frag_colorinput);
 }
 
 int main()

@@ -14,6 +14,7 @@ protected:
 	std::vector<GLfloat> vertices;
 	GLuint vao = 0;
 	GLuint vbo = 0;
+	GLuint color_vbo = 0;
 	GLuint vertCount = 0;
 };
 
