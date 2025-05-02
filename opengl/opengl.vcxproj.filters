@@ -41,5 +41,8 @@
     <ClInclude Include="input.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="SimpleGas.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

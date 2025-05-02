@@ -4,6 +4,7 @@
 #include "Actor.h"
 #include "Triangle.h"
 #include <vector>
+#include "input.h"
 #include <memory>
 #include <glm/vec3.hpp>
 
@@ -14,10 +15,8 @@ using Actor_vec = std::vector<Actor_ptr>;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void drawTriangles(std::vector<Actor_ptr> &actors);
-void processInput(GLFWwindow* window);
 void mainLoop(GLFWwindow* &window);
 void vertexSpecify();
-void specifyRectangle();
 GLFWwindow* initWindow();
 
 // Shader sources
@@ -65,7 +64,6 @@ const unsigned int SCR_HEIGHT = 1200;
 float r = 0.0f;
 float g = 0.0f;
 float b = 0.0f;
-size_t actor_i = 1;
 GLuint vao = 0;
 GLuint vbo = 0;
 GLuint gGraphicsPipelineShaderProgram = 0;
@@ -150,8 +148,6 @@ int main()
 
     // glfw window creation
     GLFWwindow* window = initWindow();
-    //vertexSpecify();
-    //specifyRectangle();
     createGraphicsPipeline();
 
     // glad: load all OpenGL function pointers
@@ -170,45 +166,6 @@ int main()
     // ------------------------------------------------------------------
     glfwTerminate();
     return 0;
-}
-
-// process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
-// ---------------------------------------------------------------------------------------------------------
-void processInput(GLFWwindow* window, Actor_vec &actors)
-{
-    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, true);
-
-    if (glfwGetKey(window, GLFW_KEY_PAGE_UP) == GLFW_PRESS)
-        b = fminf(b + 0.0005f, 1.0f); // Increase color, clamp to 1.0
-
-    if (glfwGetKey(window, GLFW_KEY_PAGE_DOWN) == GLFW_PRESS)
-        b = fmaxf(b - 0.0005f, 0.0f); // Decrease color, clamp to 0.0
-
-    if (glfwGetKey(window, GLFW_KEY_HOME) == GLFW_PRESS)
-        g = fminf(g + 0.0005f, 1.0f); // Increase color, clamp to 1.0
-
-    if (glfwGetKey(window, GLFW_KEY_END) == GLFW_PRESS)
-        g = fmaxf(g - 0.0005f, 0.0f); // Decrease color, clamp to 0.0
-
-    if (glfwGetKey(window, GLFW_KEY_INSERT) == GLFW_PRESS)
-        r = fminf(r + 0.0005f, 1.0f); // Increase color, clamp to 1.0
-
-    if (glfwGetKey(window, GLFW_KEY_DELETE) == GLFW_PRESS)
-        r = fmaxf(r - 0.0005f, 0.0f); // Decrease color, clamp to 0.0
-
-    if (glfwGetKey(window, GLFW_KEY_0) == GLFW_PRESS)
-        actor_i = 0;
-    if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
-        actor_i = 1;
-    if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
-		actors[actor_i]->move(.001f, 0.0f); 
-    if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
-		actors[actor_i]->move(-.001f, 0.0f); 
-    if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
-		actors[actor_i]->move(0.0f, .001f); 
-    if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
-		actors[actor_i]->move(0.0f, -.001f); 
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
@@ -231,15 +188,6 @@ void preDraw() {
     glPointSize(20);
 
     glUseProgram(gGraphicsPipelineShaderProgram);
-
-}
-
-void draw() {
-    glBindVertexArray(vao);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glPointSize(20);
-    glDrawArrays(GL_POINTS, 0, 3);
-
 }
 
 void drawTriangles(std::vector<Actor_ptr> &actors)
@@ -252,12 +200,6 @@ void drawTriangles(std::vector<Actor_ptr> &actors)
     }
 }
 
-void drawRect() {
-    glBindVertexArray(rectVAO);
-    glDrawElements(GL_TRIANGLE_FAN, 6, GL_UNSIGNED_INT, 0);
-    glBindVertexArray(0);
-}
-
 void updateVertexData() {
     // Modify your vertices array here, for example:
     //vertices[4] = sin(glfwGetTime()) * 0.2f; // Move a vertex based on time
@@ -268,11 +210,11 @@ void updateVertexData() {
     // Alternative: glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
 }
 
-
 void mainLoop(GLFWwindow* &window)
 {
     //Test Triangle pointers and vector
 	std::vector<Actor_ptr> actors;
+	actors.push_back(std::make_unique<Triangle>());
 	actors.push_back(std::make_unique<Triangle>());
 	actors.push_back(std::make_unique<Triangle>());
 
@@ -286,8 +228,6 @@ void mainLoop(GLFWwindow* &window)
         // render Commands here
         // ------
         preDraw();
-        //drawRect();
-        //draw();
         drawTriangles(actors);
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
@@ -298,33 +238,6 @@ void mainLoop(GLFWwindow* &window)
 }
 
 
-void specifyRectangle()
-{
-    glGenVertexArrays(1, &rectVAO);
-    glBindVertexArray(rectVAO);
-
-    // Vertex buffer
-    glGenBuffers(1, &rectVBO);
-    glBindBuffer(GL_ARRAY_BUFFER, rectVBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(rectangle), rectangle, GL_STATIC_DRAW);
-
-    // Element buffer
-    glGenBuffers(1, &EBO);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-    // Vertex attributes
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-
-    // Unbind VAO (do not unbind EBO while VAO is bound!)
-    glBindVertexArray(0);
-    
-    // uncomment this call to draw in wireframe polygons.
-    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
-
-}
 
 void vertexSpecify()
 {
