@@ -7,6 +7,7 @@
 #include "input.h"
 #include <memory>
 #include <glm/vec3.hpp>
+#include "SimpleGas.h"
 
 glm::vec3 aa;
 //Namespaces
@@ -185,7 +186,7 @@ void preDraw() {
     glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
 	glClearColor(r, g, b, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
-    glPointSize(20);
+    glPointSize(10);
 
     glUseProgram(gGraphicsPipelineShaderProgram);
 }
@@ -214,10 +215,14 @@ void mainLoop(GLFWwindow* &window)
 {
     //Test Triangle pointers and vector
 	std::vector<Actor_ptr> actors;
-	actors.push_back(std::make_unique<Triangle>());
-	actors.push_back(std::make_unique<Triangle>());
-	actors.push_back(std::make_unique<Triangle>());
-
+	//actors.push_back(std::make_unique<Triangle>());
+	//actors.push_back(std::make_unique<Triangle>());
+    //Create gas
+    actors.push_back(std::make_unique<simpleGas>(
+        glm::vec3(-1.0f, -1.0f, 0.0f),
+        glm::vec3(1.0f, 1.0f, 0.0f),
+        100
+    ));
     //Loop!
     while (!glfwWindowShouldClose(window))
     {
