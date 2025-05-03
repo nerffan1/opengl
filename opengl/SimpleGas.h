@@ -6,6 +6,13 @@
 #include <random>
 #include <vector>
 
+struct point
+{
+	glm::vec3 pos;
+	glm::vec3 vel;
+	glm::vec3 acc;
+};
+
 class simpleGas : public Actor
 {
 public:
@@ -17,6 +24,6 @@ public:
 
 private:
     glm::vec3 mBoxMin, mBoxMax;
-    std::vector<glm::vec3> mPoints;
+    std::vector<point> mPoints;
     GLuint mVAO, mVBO; // Vertex Array Object and Vertex Buffer Object IDs
 };

@@ -7,13 +7,13 @@
         std::uniform_real_distribution<float> distX(boxMin.x, boxMax.x);
         std::uniform_real_distribution<float> distY(boxMin.y, boxMax.y);
         std::uniform_real_distribution<float> distZ(boxMin.z, boxMax.z);
+        std::uniform_real_distribution<float> vel(0, 1);
 
+        //Generate Random Initial Values
         for (auto& p : mPoints) {
-            p.x = distX(gen);
-            p.y = distY(gen);
-            p.z = distZ(gen);
+			p.pos = {distX(gen), distY(gen), distZ(gen)};
+			p.vel = {vel(gen), vel(gen), vel(gen)};
         }
-
 
         vertexSpecify();
     }
@@ -45,13 +45,15 @@
         for (size_t i = 0; i < mPoints.size(); ++i) {
             for (size_t j = i + 1; j < mPoints.size(); ++j) {
                 // ... (Collision detection and response logic - example below)
+				mPoints[i].pos += mPoints[i].vel * 0.0000001f; // Move point i
+
             }
         }
 
         // 2. Boundary collisions (simple example – adjust for your needs)
         for (auto& p : mPoints) {
-            if (p.x < mBoxMin.x) p.x = mBoxMin.x;
-            if (p.x > mBoxMax.x) p.x = mBoxMax.x;
+            if (p.pos.x < mBoxMin.x) p.pos.x = mBoxMin.x;
+            if (p.pos.x > mBoxMax.x) p.pos.x = mBoxMax.x;
             // ... (Similar checks for y and z)
         }
 
