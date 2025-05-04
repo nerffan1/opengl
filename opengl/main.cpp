@@ -49,7 +49,7 @@ out vec4 FragColor;
 
 void main()
 {
-   FragColor = vec4(colour, 1.0);
+   FragColor = vec4(1.0,0.0,0.0, 1.0);
 })glsl";
 
 const char* fragmentSource = "#version 460 core\n"
@@ -186,7 +186,7 @@ void preDraw() {
     glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
 	glClearColor(r, g, b, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
-    glPointSize(10);
+    glPointSize(5);
 
     glUseProgram(gGraphicsPipelineShaderProgram);
 }
@@ -221,7 +221,7 @@ void mainLoop(GLFWwindow* &window)
     actors.push_back(std::make_unique<simpleGas>(
         glm::vec3(-1.0f, -1.0f, 0.0f),
         glm::vec3(1.0f, 1.0f, 0.0f),
-        100
+        500
     ));
     //Loop!
     while (!glfwWindowShouldClose(window))
