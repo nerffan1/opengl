@@ -16,14 +16,15 @@ struct point
 class simpleGas : public Actor
 {
 public:
-	simpleGas(const glm::vec3& boxMin, const glm::vec3& boxMax, int numParticles = 1000);
+	simpleGas(const glm::vec3& boxMin, const glm::vec3& boxMax, float r, int numParticles = 1000);
 	void draw() override;
 	void vertexSpecify() override;
-	void update() override;
+	void update(float dt) override;
 	void move(GLfloat x, GLfloat y, GLfloat z = 0.0f) {};
 
 private:
     glm::vec3 mBoxMin, mBoxMax;
     std::vector<point> mPoints;
     GLuint mVAO, mVBO; // Vertex Array Object and Vertex Buffer Object IDs
+	float mR = 1;
 };

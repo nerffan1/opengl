@@ -1,21 +1,29 @@
 #include "SimpleGas.h"
 
-    simpleGas::simpleGas(const glm::vec3& boxMin, const glm::vec3& boxMax, int numParticles) : mBoxMin(boxMin), mBoxMax(boxMax) {
+    simpleGas::simpleGas(const glm::vec3& boxMin, const glm::vec3& boxMax, float r, int numParticles) : 
+        mBoxMin(boxMin),
+        mBoxMax(boxMax),
+        mR(r/(2*600))
+    {
         mPoints.resize(numParticles);
         std::random_device rd;  // Obtain a random seed from the OS
         std::mt19937_64 gen(rd()); // Standard mersenne_twister_engine seeded with rd()
         std::uniform_real_distribution<float> distX(boxMin.x, boxMax.x);
         std::uniform_real_distribution<float> distY(boxMin.y, boxMax.y);
         std::uniform_real_distribution<float> distZ(boxMin.z, boxMax.z);
-        std::uniform_real_distribution<float> vel(-1, 1);
+        std::uniform_real_distribution<float> vel(-.005, .005);
 
         //Generate Random Initial Values
-        for (auto& p : mPoints) {
+        for (auto& p : mPoints)
+       {
 			p.pos = {distX(gen), distY(gen), distZ(gen)};
 			p.vel = {vel(gen), vel(gen), vel(gen)};
         }
 
+        //Set up the pointsize of the squares!
+		glPointSize(static_cast<GLfloat>(r));
         vertexSpecify();
+
     }
 
     void simpleGas::draw() {
@@ -47,11 +55,23 @@
         glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
 
-    void simpleGas::update()  {
+    void simpleGas::update(float dt)  {
         // 1. Collision detection (brute force - you'll optimize this later!)
         for (size_t i = 0; i < mPoints.size(); ++i) {
             for (size_t j = i + 1; j < mPoints.size(); ++j) {
                 // ... (Collision detection and response logic - example below)
+                bool overlapsX = (mPoints[i].pos.x + mR > mPoints[j].pos.x - mR) && // i's right is past j's left
+                    (mPoints[i].pos.x - mR < mPoints[j].pos.x + mR);  // i's left is before j's right
+
+                bool overlapsY = (mPoints[i].pos.y + mR > mPoints[j].pos.y - mR) && // i's top is past j's bottom
+                    (mPoints[i].pos.y - mR < mPoints[j].pos.y + mR);  // i's bottom is before j's top
+
+                if (overlapsX && overlapsY)
+                {
+                    glm::vec3 tmp = mPoints[i].vel;
+                    mPoints[i].vel = mPoints[j].vel;
+                    mPoints[j].vel = tmp;
+                }
             }
         }
 
@@ -69,7 +89,7 @@
         for (size_t i = 0; i < mPoints.size(); ++i) {
             for (size_t j = i + 1; j < mPoints.size(); ++j) {
                 // ... (Collision detection and response logic - example below)
-				mPoints[i].pos += mPoints[i].vel * 0.000001f; // Move point i
+				mPoints[i].pos += mPoints[i].vel * dt; // Move point i
             }
         }
 

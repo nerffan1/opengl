@@ -8,6 +8,7 @@
 #include <memory>
 #include <glm/vec3.hpp>
 #include "SimpleGas.h"
+#include <chrono>
 
 glm::vec3 aa;
 //Namespaces
@@ -15,8 +16,8 @@ using Actor_ptr = std::unique_ptr<Actor> ;
 using Actor_vec = std::vector<Actor_ptr>;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-void drawTriangles(std::vector<Actor_ptr> &actors);
-void mainLoop(GLFWwindow* &window);
+void drawActors(std::vector<Actor_ptr> &actors);
+void mainLoop(GLFWwindow* window);
 void vertexSpecify();
 GLFWwindow* initWindow();
 
@@ -186,18 +187,25 @@ void preDraw() {
     glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
 	glClearColor(r, g, b, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
-    glPointSize(5);
 
     glUseProgram(gGraphicsPipelineShaderProgram);
 }
 
-void drawTriangles(std::vector<Actor_ptr> &actors)
+void drawActors (std::vector<Actor_ptr> &actors)
 {
     //Draw actors
+    // HOW CAN WE EXPAND THIS TO BE MORE UNIVERSAL OF ALL TO-RENDER ITEMS?
     for (auto& actor : actors)
     {
-        actor->update();
         actor->draw();
+    }
+}
+
+void updateActors(std::vector<Actor_ptr>& actors, float dt)
+{
+    for (auto& actor : actors)
+    {
+        actor->update(dt);
     }
 }
 
@@ -211,8 +219,9 @@ void updateVertexData() {
     // Alternative: glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
 }
 
-void mainLoop(GLFWwindow* &window)
+void mainLoop(GLFWwindow* window)
 {
+
     //Test Triangle pointers and vector
 	std::vector<Actor_ptr> actors;
 	//actors.push_back(std::make_unique<Triangle>());
@@ -221,19 +230,51 @@ void mainLoop(GLFWwindow* &window)
     actors.push_back(std::make_unique<simpleGas>(
         glm::vec3(-1.0f, -1.0f, 0.0f),
         glm::vec3(1.0f, 1.0f, 0.0f),
-        500
+        30,
+        100
     ));
-    //Loop!
+    auto lastT = std::chrono::steady_clock::now(); // Use steady_clock!
+
+    // Timing constants
+    constexpr float TARGET_FPS = 60.0f;
+    constexpr float TARGET_DT = 1.0f / TARGET_FPS; // Fixed timestep for updates
+    constexpr float MAX_FRAME_TIME = 0.1f;         // Avoid spiral of death (10 FPS min)
+
+    // Time tracking variables
+    using Clock = std::chrono::steady_clock; // Or high_resolution_clock
+    auto previousTime = Clock::now();
+    float accumulatedTime = 0.0f;
+
     while (!glfwWindowShouldClose(window))
     {
-        // input
-        // -----
-        processInput(window, actors);
+
+        // 1. Calculate Real Frame Time (dt for the rendering frame)
+        auto currentTime = Clock::now();
+        float frameTime = std::chrono::duration<float>(currentTime - previousTime).count();
+        previousTime = currentTime;
+
+        // 2. Clamp frame time to prevent huge jumps after pauses/debugging
+        frameTime = std::min(frameTime, MAX_FRAME_TIME);
+
+        // 3. Accumulate frame time
+        accumulatedTime += frameTime;
+
+        // 4. Process Input (once per frame)
+        // Pass frameTime if needed for input sensitivity, otherwise just window/actors
+        processInput(window, actors); // Assuming processInput doesn't need dt
+
+        // 5. Fixed Timestep Updates
+        // Run update logic multiple times if necessary to catch up
+        while (accumulatedTime >= TARGET_DT)
+        {
+            updateActors(actors, TARGET_DT); // Pass the FIXED delta time
+            accumulatedTime -= TARGET_DT;
+        }
 
         // render Commands here
         // ------
         preDraw();
-        drawTriangles(actors);
+        drawActors(actors);
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------

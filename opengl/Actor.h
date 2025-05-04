@@ -7,7 +7,7 @@ public:
 	Actor();
 	virtual void draw();
 	virtual void vertexSpecify() = 0;
-	virtual void update() = 0;
+	virtual void update(float dt) = 0;
 	virtual void move(GLfloat x, GLfloat y, GLfloat z = 0.0f) = 0;
 
 protected:
