@@ -3,11 +3,11 @@
 #include <iostream>
 #include "Actor.h"
 #include "Triangle.h"
-#include <vector>
 #include "input.h"
-#include <memory>
 #include <glm/vec3.hpp>
 #include "SimpleGas.h"
+#include <vector>
+#include <memory>
 #include <chrono>
 
 glm::vec3 aa;

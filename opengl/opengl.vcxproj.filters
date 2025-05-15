@@ -33,6 +33,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="shader.glsl" />
+    <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Triangle.h">
