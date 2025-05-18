@@ -9,60 +9,24 @@
 #include <vector>
 #include <memory>
 #include <chrono>
+#include "window.h"
+#include "Shader.h"
 
 glm::vec3 aa;
 //Namespaces
 using Actor_ptr = std::unique_ptr<Actor> ;
 using Actor_vec = std::vector<Actor_ptr>;
 
-void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+using shader_ptr = std::unique_ptr<shader>;
+using shader_vec = std::vector<shader_ptr>;
+
 void drawActors(std::vector<Actor_ptr> &actors);
 void mainLoop(GLFWwindow* window);
 void vertexSpecify();
-GLFWwindow* initWindow();
-
-// Shader sources
-const GLchar* vertexSource = R"glsl(
-#version 460 core
-in vec4 position;
-void main()
-{
-	gl_Position = vec4(position);
-})glsl";
-
-const GLchar* vertexSource_w_color = R"glsl(
-#version 460 core
-layout(location = 0) in vec3 vertex_position;
-layout(location = 1) in vec3 vertex_colour;
-
-out vec3 colour;
-
-void main() {
-  colour = vertex_colour;
-  gl_Position = vec4(vertex_position, 1.0);
-})glsl";
-
-const char* frag_colorinput = R"glsl(
-#version 460 core
-
-in vec3 colour;
-out vec4 FragColor;
-
-void main()
-{
-   FragColor = vec4(1.0,0.0,0.0, 1.0);
-})glsl";
-
-const char* fragmentSource = "#version 460 core\n"
-"out vec4 FragColor;\n"
-"void main()\n"
-"{\n"
-"   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
-"}\n\0";
 
 // settings/globals
-const unsigned int SCR_WIDTH = 1200;
-const unsigned int SCR_HEIGHT = 1200;
+extern const unsigned int SCR_WIDTH;
+extern const unsigned int SCR_HEIGH;
 float r = 0.0f;
 float g = 0.0f;
 float b = 0.0f;
@@ -88,69 +52,18 @@ GLuint indices[] = {  // note that we start from 0!
     1, 2, 3    // second triangle
 };
 
-
-
-GLuint CompileShader(GLuint type, const std::string&  source){
-    GLuint shaderobject;
-
-    if (type == GL_VERTEX_SHADER){ 
-        shaderobject = glCreateShader(GL_VERTEX_SHADER);
-    }
-    else if (type == GL_FRAGMENT_SHADER) {
-        shaderobject = glCreateShader(GL_FRAGMENT_SHADER);
-    }
-	const char* src = source.c_str();
-	glShaderSource(shaderobject, 1, &src, nullptr);
-	glCompileShader(shaderobject);
-
-	return shaderobject;
-}
-
-GLuint createShaderProgram(const std::string& vertexshadersource,
-     const std::string& fragmentshadersource) {
-     GLuint programObject = glCreateProgram();
-
-     GLuint myVertexShader = CompileShader(GL_VERTEX_SHADER, vertexshadersource);
-     GLuint myFragmentShader = CompileShader(GL_FRAGMENT_SHADER, fragmentshadersource);
-
-     glAttachShader(programObject, myVertexShader);
-     glAttachShader(programObject, myFragmentShader);
-     glLinkProgram(programObject);
-
-     //Check linking
-     int success;
-     char infoLog[512];
-     glGetProgramiv(programObject, GL_LINK_STATUS, &success);
-     if (!success) {
-         glGetProgramInfoLog(programObject, 512, NULL, infoLog);
-         std::cout << infoLog;
-     }
-
-     // Validate our program
-     glValidateProgram(programObject);
-
-     //Delete and detach shader
-
-     return programObject;
- }
-
-void createGraphicsPipeline()
+void createGraphicsPipeline(shader_vec& shaders)
 {
-    gGraphicsPipelineShaderProgram = createShaderProgram(vertexSource_w_color, frag_colorinput);
+    shaders.push_back(std::make_unique<shader>("Shaders/simple.vert", "Shaders/simple.frag"));
+    gGraphicsPipelineShaderProgram = shaders[0]->mProgramObject;
 }
 
 int main()
 {
-    // glfw: initialize and configure GLFW. Resources are allocated.
-    // Return GLFW_TRUE if successful
-    glfwInit();
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-    // glfw window creation
     GLFWwindow* window = initWindow();
-    createGraphicsPipeline();
+
+    shader_vec shaders;
+    createGraphicsPipeline(shaders);
 
     // glad: load all OpenGL function pointers
     // ---------------------------------------
@@ -170,14 +83,6 @@ int main()
     return 0;
 }
 
-// glfw: whenever the window size changed (by OS or user resize) this callback function executes
-// ---------------------------------------------------------------------------------------------
-void framebuffer_size_callback(GLFWwindow* window, int width, int height)
-{
-    // make sure the viewport matches the new window dimensions; note that width and 
-    // height will be significantly larger than specified on retina displays.
-    glViewport(0, 0, width, height);
-}
 
 
 void preDraw() {
@@ -223,7 +128,8 @@ void mainLoop(GLFWwindow* window)
 {
 
     //Test Triangle pointers and vector
-	std::vector<Actor_ptr> actors;
+	Actor_vec actors;
+
 	//actors.push_back(std::make_unique<Triangle>());
 	//actors.push_back(std::make_unique<Triangle>());
     //Create gas
@@ -284,7 +190,6 @@ void mainLoop(GLFWwindow* window)
 }
 
 
-
 void vertexSpecify()
 {
     //  GPU Setup
@@ -311,21 +216,4 @@ void vertexSpecify()
 };
 
 
- GLFWwindow* initWindow()
-{
-    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Learning OpenGL", NULL, NULL);
-    if (!window)
-    {
-        std::cout << "Failed to create GLFW window and " << std::endl;
-        glfwTerminate();
-        return nullptr ;
-    }
-	// The context will remain current until you make another context current or 
-    // until the window owning the current context is destroyed.
-    glfwMakeContextCurrent(window); 
-    gladLoadGL();
-    // This sets the function that will be called after resizing the window
-    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-    return window;
-}
 

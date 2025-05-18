@@ -145,18 +145,24 @@
     <ClCompile Include="..\..\..\..\..\..\glad\src\glad.c" />
     <ClCompile Include="Actor.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Shader.cpp" />
     <ClCompile Include="SimpleGas.cpp" />
+    <ClCompile Include="window.cpp" />
+    <ClCompile Include="window.h" />
     <ClCompile Include="Triangle.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="README.md" />
-    <None Include="shader.glsl" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="Actor.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="resource1.h" />
+    <ClInclude Include="Shader.h" />
     <ClInclude Include="SimpleGas.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="Triangle.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Shaders\simple.frag" />
+    <None Include="Shaders\simple.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
