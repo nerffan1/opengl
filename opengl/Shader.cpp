@@ -32,14 +32,8 @@ shader::shader(const std::string& vertFile, const std::string& fragFile) :
 
 GLuint shader::CompileShader(GLuint type, const std::string& source)
 {
-    GLuint shaderobject;
+    GLuint shaderobject = glCreateShader(GL_VERTEX_SHADER); //OpenGL validates
 
-    if (type == GL_VERTEX_SHADER) {
-        shaderobject = glCreateShader(GL_VERTEX_SHADER);
-    }
-    else if (type == GL_FRAGMENT_SHADER) {
-        shaderobject = glCreateShader(GL_FRAGMENT_SHADER);
-    }
     const char* src = source.c_str();
     glShaderSource(shaderobject, 1, &src, nullptr);
     glCompileShader(shaderobject);
@@ -48,20 +42,29 @@ GLuint shader::CompileShader(GLuint type, const std::string& source)
 };
 
 
-std::string shader::LoadShaderAsString(const std::string &filename) {
-    // Resulting shader program loaded as a single string
-    std::string result = "";
+std::string shader::LoadShaderAsString(const std::string& filename) {
+    // Open file at the end to get size
+    std::ifstream file(filename, std::ios::binary | std::ios::ate);
 
-    std::string line = "";
-    std::ifstream myFile(filename.c_str());
-
-    if (myFile.is_open()) {
-        while (std::getline(myFile, line)) {
-            result += line + '\n';
-        }
-        myFile.close();
+    if (!file.is_open()) {
+        throw std::runtime_error("Failed to open file: " + filename);
     }
 
-    return result;
-}
+    // Get file size
+    const auto fileSize = file.tellg();
+    if (fileSize == -1) {
+        throw std::runtime_error("Failed to determine file size: " + filename);
+    }
 
+    // Create buffer and read file
+    std::string buffer;
+    buffer.resize(fileSize);  // Allocate space
+
+    file.seekg(0);  // Rewind to start
+    file.read(&buffer[0], fileSize);  // Read directly into string's memory
+
+    // Remove all '\r' characters (Windows to Unix conversion)
+    buffer.erase(std::remove(buffer.begin(), buffer.end(), '\r'), buffer.end());
+
+    return buffer;
+}

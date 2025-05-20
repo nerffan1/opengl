@@ -136,8 +136,7 @@ void mainLoop(GLFWwindow* window)
     actors.push_back(std::make_unique<simpleGas>(
         glm::vec3(-1.0f, -1.0f, 0.0f),
         glm::vec3(1.0f, 1.0f, 0.0f),
-        30,
-        100
+        5
     ));
     auto lastT = std::chrono::steady_clock::now(); // Use steady_clock!
 

@@ -10,7 +10,7 @@ struct point
 {
 	glm::vec3 pos;
 	glm::vec3 vel;
-	glm::vec3 acc;
+	glm::vec3 a;
 };
 
 class simpleGas : public Actor
@@ -19,7 +19,7 @@ public:
 	simpleGas(const glm::vec3& boxMin, const glm::vec3& boxMax, float r, int numParticles = 1000);
 	void draw() override;
 	void vertexSpecify() override;
-	void update(float dt) override;
+	void update(const float& dt) override;
 	void move(GLfloat x, GLfloat y, GLfloat z = 0.0f) {};
 
 private:

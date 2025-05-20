@@ -43,7 +43,7 @@ void Triangle::vertexSpecify()
 	glBindVertexArray(0);
 }
 
-void Triangle::update(float dt)
+void Triangle::update(const float& dt)
 {
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBufferSubData(GL_ARRAY_BUFFER, 0, vertices.size() * sizeof(float), vertices.data());
