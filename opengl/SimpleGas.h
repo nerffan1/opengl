@@ -11,6 +11,7 @@ struct point
 	glm::vec3 pos;
 	glm::vec3 vel;
 	glm::vec3 a;
+	glm::vec3 color;
 };
 
 class simpleGas : public Actor
@@ -21,6 +22,7 @@ public:
 	void vertexSpecify() override;
 	void update(const float& dt) override;
 	void move(GLfloat x, GLfloat y, GLfloat z = 0.0f) {};
+	void updateColors();
 
 private:
     glm::vec3 mBoxMin, mBoxMax;

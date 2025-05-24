@@ -1,23 +1,25 @@
 #include "SimpleGas.h"
+#include <GLFW/glfw3.h>
 
     simpleGas::simpleGas(const glm::vec3& boxMin, const glm::vec3& boxMax, float r, int numParticles) : 
         mBoxMin(boxMin),
         mBoxMax(boxMax),
         mR(r/(2*600))
     {
-        mPoints.resize(numParticles);
         std::random_device rd;  // Obtain a random seed from the OS
         std::mt19937_64 gen(rd()); // Standard mersenne_twister_engine seeded with rd()
         std::uniform_real_distribution<float> distX(boxMin.x, boxMax.x);
         std::uniform_real_distribution<float> distY(boxMin.y, boxMax.y);
-        std::uniform_real_distribution<float> vel(-.3, .3);
+        std::uniform_real_distribution<float> vel(-.1, .1);
 
-        //Generate Random Initial Values
-        for (auto& p : mPoints)
-       {
-			p.pos = {distX(gen), distY(gen), 0.0f};
-			p.vel = {vel(gen), vel(gen), 0.0f};
-            p.a   = {0.0f, -0.2f, 0.0f};
+        mPoints.reserve(numParticles);  // Allocates memory only
+
+        for (size_t i = 0; i < numParticles; ++i) {
+            mPoints.emplace_back(
+                glm::vec3{ distX(gen), distY(gen), 0.0f },   // pos
+                glm::vec3{ vel(gen), vel(gen), 0.0f },       // vel
+                glm::vec3{ 0.0f, 0.0f, 0.0f }               // a
+            );
         }
 
         //Set up the pointsize of the squares!
@@ -32,27 +34,21 @@
     }
 
     void simpleGas::vertexSpecify() {
+        // VAO + VBO
         glGenVertexArrays(1, &mVAO);
-        glGenBuffers(1, &mVBO);
-
         glBindVertexArray(mVAO);
+
+        glGenBuffers(1, &mVBO);
         glBindBuffer(GL_ARRAY_BUFFER, mVBO);
-        glBufferData(GL_ARRAY_BUFFER, mPoints.size() * sizeof(point), mPoints.data(), GL_DYNAMIC_DRAW); // Dynamic for updates
+        glBufferData(GL_ARRAY_BUFFER, mPoints.size() * sizeof(point), mPoints.data(), GL_DYNAMIC_DRAW);
 
-        // Position attribute
-        glVertexAttribPointer(
-            0,                  // attribute location
-            3,                  // size (vec3)
-            GL_FLOAT,           // type
-            GL_FALSE,           // normalized?
-            sizeof(point),      // stride (size of the whole struct)
-           (void*)0  // offset to position in struct
-        );
-
+        // pos -> location 0
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(point), (void*)offsetof(point, pos));
         glEnableVertexAttribArray(0);
 
-        glBindVertexArray(0);
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        // vel as color -> location 1
+        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(point), (void*)offsetof(point, color));
+        glEnableVertexAttribArray(1);
     }
 
     void simpleGas::update(const float& dt)  {
@@ -67,10 +63,10 @@
                 maxy_i = mPoints[i].pos.y + mR;
 
             for (size_t j = i + 1; j < mPoints.size(); ++j) {
-                auto
+                const auto
                     minx_j = mPoints[j].pos.x - mR,
-                    miny_j = mPoints[j].pos.y - mR,
                     maxx_j = mPoints[j].pos.x + mR,
+                    miny_j = mPoints[j].pos.y - mR,
                     maxy_j = mPoints[j].pos.y + mR;
 
                 auto
@@ -154,11 +150,50 @@
         }
 
         // 4. Update VBO (send new positions to GPU)
+        // During update
+        updateColors();
         glBindBuffer(GL_ARRAY_BUFFER, mVBO);
-        glBufferSubData( GL_ARRAY_BUFFER,
-            0,
-            mPoints.size() * sizeof(point),
-            mPoints.data());
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        glBufferSubData(GL_ARRAY_BUFFER, 0, mPoints.size() * sizeof(point), mPoints.data());
+    }
+
+/**
+ * 
+*/
+    void simpleGas::updateColors() {
+        float minVelSq = std::numeric_limits<float>::max();
+        float maxVelSq = 0.0f;
+
+        for (const auto& p : mPoints) {
+            float velSq = p.vel.x * p.vel.x + p.vel.y * p.vel.y;
+            minVelSq = std::min(minVelSq, velSq);
+            maxVelSq = std::max(maxVelSq, velSq);
+        }
+
+        float velRange = maxVelSq - minVelSq;
+        if (velRange < 1e-6f) {
+            for (auto& p : mPoints) {
+                p.color = glm::vec3(0.0f, 1.0f, 0.0f);  // Green for all
+            }
+            return;
+        }
+
+        for (auto& p : mPoints) {
+            float velSq = p.vel.x * p.vel.x + p.vel.y * p.vel.y;
+            float t = (velSq - minVelSq) / velRange;
+
+            // Smooth color transition using smoothstep-like function
+            t = t * t * (3.0f - 2.0f * t);  // Smoothstep interpolation
+
+            if (t < 0.5f) {
+                // Green to Yellow (0.0 to 0.5)
+                float localT = t * 2.0f;  // Map [0, 0.5] to [0, 1]
+                p.color = glm::vec3(localT, 1.0f, 0.0f);
+            }
+            else {
+                // Yellow to Red (0.5 to 1.0)
+                float localT = (t - 0.5f) * 2.0f;  // Map [0.5, 1] to [0, 1]
+                p.color = glm::vec3(1.0f, 1.0f - localT, 0.0f);
+            }
+        }
     }
 
