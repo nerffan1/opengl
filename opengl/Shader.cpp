@@ -32,7 +32,7 @@ shader::shader(const std::string& vertFile, const std::string& fragFile) :
 
 GLuint shader::CompileShader(GLuint type, const std::string& source)
 {
-    GLuint shaderobject = glCreateShader(GL_VERTEX_SHADER); //OpenGL validates
+    GLuint shaderobject = glCreateShader(type); //OpenGL validates
 
     const char* src = source.c_str();
     glShaderSource(shaderobject, 1, &src, nullptr);
