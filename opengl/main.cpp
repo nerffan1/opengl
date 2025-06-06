@@ -13,12 +13,14 @@
 #include "Shader.h"
 
 glm::vec3 aa;
-//Namespaces
+//Actors
 using Actor_ptr = std::unique_ptr<Actor> ;
 using Actor_vec = std::vector<Actor_ptr>;
-
+//Shaders
 using shader_ptr = std::unique_ptr<shader>;
 using shader_vec = std::vector<shader_ptr>;
+//Clock
+using Clock = std::chrono::steady_clock; // Or high_resolution_clock
 
 void drawActors(std::vector<Actor_ptr> &actors);
 void mainLoop(GLFWwindow* window);
@@ -147,7 +149,6 @@ void mainLoop(GLFWwindow* window)
     constexpr float MAX_FRAME_TIME = 0.1f;         // Avoid spiral of death (10 FPS min)
 
     // Time tracking variables
-    using Clock = std::chrono::steady_clock; // Or high_resolution_clock
     auto previousTime = Clock::now();
     float accumulatedTime = 0.0f;
 
