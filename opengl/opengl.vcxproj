@@ -144,18 +144,25 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\..\..\..\glad\src\glad.c" />
     <ClCompile Include="Actor.cpp" />
+    <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="Grid.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="SimpleGas.cpp" />
+    <ClCompile Include="SquareGrid.cpp" />
     <ClCompile Include="window.cpp" />
     <ClCompile Include="window.h" />
     <ClCompile Include="Triangle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h" />
-    <ClInclude Include="Header.h" />
-    <ClInclude Include="resource.h" />
-    <ClInclude Include="resource1.h" />
+    <ClInclude Include="Entity.h" />
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="Component.h" />
+    <ClInclude Include="GphxComp.h" />
+    <ClInclude Include="GridComp.h" />
+    <ClInclude Include="Grid.h" />
+    <ClInclude Include="SquareGrid.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="SimpleGas.h" />
     <ClInclude Include="input.h" />

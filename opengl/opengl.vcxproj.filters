@@ -16,6 +16,15 @@
     <Filter Include="Resource Files\Shaders">
       <UniqueIdentifier>{503b4606-b1ff-4d00-bb61-853a0c6249dd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Grids">
+      <UniqueIdentifier>{bd34a2b3-e450-42f5-961a-1ca7d162392a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Grids">
+      <UniqueIdentifier>{8606596b-9ab2-4429-b653-0011305065d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Components">
+      <UniqueIdentifier>{3b072441-d0d9-414b-82f1-22f33d27a575}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -42,6 +51,15 @@
     <ClCompile Include="window.h">
       <Filter>Header Files</Filter>
     </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SquareGrid.cpp">
+      <Filter>Source Files\Grids</Filter>
+    </ClCompile>
+    <ClCompile Include="Grid.cpp">
+      <Filter>Source Files\Grids</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\simple.frag">
@@ -64,17 +82,29 @@
     <ClInclude Include="SimpleGas.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="resource1.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Shader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Header.h">
+    <ClInclude Include="Entity.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Grid.h">
+      <Filter>Header Files\Grids</Filter>
+    </ClInclude>
+    <ClInclude Include="GridComp.h">
+      <Filter>Header Files\Grids</Filter>
+    </ClInclude>
+    <ClInclude Include="SquareGrid.h">
+      <Filter>Header Files\Grids</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="GphxComp.h">
+      <Filter>Header Files\Components</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
