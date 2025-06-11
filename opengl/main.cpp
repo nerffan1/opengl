@@ -1,16 +1,17 @@
+#include <glm/glm.hpp>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
 #include "Actor.h"
 #include "Triangle.h"
 #include "input.h"
-#include <glm/vec3.hpp>
 #include "SimpleGas.h"
 #include <vector>
 #include <memory>
 #include <chrono>
 #include "window.h"
 #include "Shader.h"
+
 
 glm::vec3 aa;
 //Actors
@@ -166,9 +167,8 @@ void mainLoop(GLFWwindow* window)
         // 3. Accumulate frame time
         accumulatedTime += frameTime;
 
-        // 4. Process Input (once per frame)
-        // Pass frameTime if needed for input sensitivity, otherwise just window/actors
-        processInput(window, actors); // Assuming processInput doesn't need dt
+        //4 Process Input
+		processInput(window, actors);
 
         // 5. Fixed Timestep Updates
         // Run update logic multiple times if necessary to catch up
@@ -179,17 +179,14 @@ void mainLoop(GLFWwindow* window)
         }
 
         // render Commands here
-        // ------
         preDraw();
         drawActors(actors);
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
         glfwSwapBuffers(window);
-        glfwPollEvents();
     }
 }
-
 
 void vertexSpecify()
 {

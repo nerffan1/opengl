@@ -1,6 +1,6 @@
 #pragma once
 #include <vector>
-#include "glm/glm.hpp"
+#include <glm/glm.hpp>
 #include "Entity.h"
 #include "GridComp.h"
 
@@ -15,8 +15,9 @@ class Grid : public Entity {
 public:
     Grid();
     const std::vector<Cell>& getCells() const { return mCells; }
+	void update(float& dt) override;
 
-private:
+protected:
     std::vector<Cell> mCells;
     std::vector<glm::vec3> mNodes;
 	std::unique_ptr<GridGraphicsComponent> mGridComp;

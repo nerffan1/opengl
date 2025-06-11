@@ -1,10 +1,11 @@
 #pragma once
 #include "Actor.h"
-#include "SimpleGas.h"
 #include <glad/glad.h>
-#include <glm/glm.hpp>   // Make sure you have GLM
+#include <GLFW/glfw3.h>
 #include <random>
 #include <vector>
+#include <iostream>
+#include <glm/glm.hpp>
 
 struct point
 {
