@@ -5,12 +5,13 @@ AssetManager AssetManager::instance;  // ✅ defines the static instance
 
 void AssetManager::PopulateSystem()
 {
+    CreateGrid();
 	CreateGas();
 }
 
 void AssetManager::CreateGrid()
 {
-	mEntities.push_back(std::make_unique<squareGrid>(3,3));
+	mEntities.push_back(std::make_unique<SquareGrid>(8,8,2.0f,2.0f));
 }
 
 void AssetManager::CreateGas()
@@ -18,6 +19,6 @@ void AssetManager::CreateGas()
     mActors.push_back(std::make_unique<simpleGas>(
         glm::vec3(-1.0f, -1.0f, 0.0f),
         glm::vec3(1.0f, 1.0f, 0.0f),
-        10,
-        2000));
+        8,
+        2500));
 }

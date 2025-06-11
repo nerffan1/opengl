@@ -28,8 +28,11 @@ public:
     static AssetManager instance;
     std::vector<std::unique_ptr<Entity>> mEntities;
 	std::vector<std::unique_ptr<Actor>> mActors;
+
     AssetManager() = default;
     ~AssetManager() = default;
+
+    //Components
 
     // Function to create a grid and return a pointer to it
     void CreateGrid();
