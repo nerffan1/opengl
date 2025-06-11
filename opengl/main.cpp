@@ -11,6 +11,7 @@
 #include <chrono>
 #include "window.h"
 #include "Shader.h"
+#include "AssetManager.h"
 
 
 glm::vec3 aa;
@@ -99,11 +100,11 @@ void preDraw() {
     glUseProgram(gGraphicsPipelineShaderProgram);
 }
 
-void drawActors (std::vector<Actor_ptr> &actors)
+void drawActors ()
 {
     //Draw actors
     // HOW CAN WE EXPAND THIS TO BE MORE UNIVERSAL OF ALL TO-RENDER ITEMS?
-    for (auto& actor : actors)
+    for (auto& actor : AssetManager::Instance().mActors)
     {
         actor->draw();
     }
@@ -127,21 +128,25 @@ void updateVertexData() {
     // Alternative: glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
 }
 
+void updateSystem(const float& dt)
+{
+	for (auto& asset : AssetManager::Instance().mEntities)
+	{
+		asset->update(dt); // Assuming a fixed timestep of 16ms (60 FPS)
+	}
+
+	for (auto& asset : AssetManager::Instance().mActors)
+	{
+		asset->update(dt); // Assuming a fixed timestep of 16ms (60 FPS)
+	}
+}
+
 void mainLoop(GLFWwindow* window)
 {
 
-    //Test Triangle pointers and vector
-	Actor_vec actors;
+    //Create Assets
+    AssetManager::Instance().PopulateSystem();
 
-	//actors.push_back(std::make_unique<Triangle>());
-	//actors.push_back(std::make_unique<Triangle>());
-    //Create gas
-    actors.push_back(std::make_unique<simpleGas>(
-        glm::vec3(-1.0f, -1.0f, 0.0f),
-        glm::vec3(1.0f, 1.0f, 0.0f),
-        10,
-        2000
-    ));
     auto lastT = std::chrono::steady_clock::now(); // Use steady_clock!
 
     // Timing constants
@@ -168,19 +173,19 @@ void mainLoop(GLFWwindow* window)
         accumulatedTime += frameTime;
 
         //4 Process Input
-		processInput(window, actors);
+		//processInput(window, actors);
 
         // 5. Fixed Timestep Updates
         // Run update logic multiple times if necessary to catch up
         while (accumulatedTime >= TARGET_DT)
         {
-            updateActors(actors, TARGET_DT); // Pass the FIXED delta time
+			updateSystem(TARGET_DT); // Update the system with fixed timestep
             accumulatedTime -= TARGET_DT;
         }
 
         // render Commands here
         preDraw();
-        drawActors(actors);
+        drawActors();
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------

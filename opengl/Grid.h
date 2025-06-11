@@ -15,7 +15,7 @@ class Grid : public Entity {
 public:
     Grid();
     const std::vector<Cell>& getCells() const { return mCells; }
-	void update(float& dt) override;
+	void update(const float& dt) override;
 
 protected:
     std::vector<Cell> mCells;

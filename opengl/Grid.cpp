@@ -6,7 +6,7 @@ Grid::Grid():
 {
 }
 
-void Grid::update(float& dt)
+void Grid::update(const float& dt)
 {
 	mGridComp->update(dt);
 }

@@ -25,7 +25,6 @@ public:
     //Populate System
     void PopulateSystem();
 
-private:
     static AssetManager instance;
     std::vector<std::unique_ptr<Entity>> mEntities;
 	std::vector<std::unique_ptr<Actor>> mActors;
@@ -34,7 +33,6 @@ private:
 
     // Function to create a grid and return a pointer to it
     void CreateGrid();
-
     //Actor Methods
     void CreateGas();
 };

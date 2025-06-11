@@ -17,7 +17,7 @@ Component* Entity::getComponent(const std::type_info& type) const
     return nullptr;
 }
 
-void Entity::update(float& dt)
+void Entity::update(const float& dt)
 {
 	for (const auto& pair : m_components) {
 		pair->update(dt);

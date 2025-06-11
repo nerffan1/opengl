@@ -11,7 +11,7 @@ public:
     Component* addComponent(std::unique_ptr<Component> component);
     Component* getComponent(const std::type_info& type) const;
 
-	virtual void update(float& dt);
+	virtual void update(const float& dt);
 private:
     std::vector<std::unique_ptr<Component>> m_components;
 };
