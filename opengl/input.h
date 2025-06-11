@@ -12,7 +12,7 @@ size_t actor_i = 1;
 
 // process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
 // ---------------------------------------------------------------------------------------------------------
-void processInput(GLFWwindow* window, Actor_vec& actors)
+void processInput(GLFWwindow* window)
 {
     glfwPollEvents();
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
@@ -35,17 +35,4 @@ void processInput(GLFWwindow* window, Actor_vec& actors)
 
     if (glfwGetKey(window, GLFW_KEY_DELETE) == GLFW_PRESS)
         r = fmaxf(r - 0.0005f, 0.0f); // Decrease color, clamp to 0.0
-
-    if (glfwGetKey(window, GLFW_KEY_0) == GLFW_PRESS)
-        actor_i = 0;
-    if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
-        actor_i = 1;
-    if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
-        actors[actor_i]->move(.001f, 0.0f);
-    if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
-        actors[actor_i]->move(-.001f, 0.0f);
-    if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
-        actors[actor_i]->move(0.0f, .001f);
-    if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
-        actors[actor_i]->move(0.0f, -.001f);
 }

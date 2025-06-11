@@ -69,6 +69,9 @@
     <ClCompile Include="Actor.cpp">
       <Filter>Source Files\Assets</Filter>
     </ClCompile>
+    <ClCompile Include="GridComp.cpp">
+      <Filter>Source Files\Grids</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\simple.frag">

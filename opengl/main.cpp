@@ -100,7 +100,7 @@ void preDraw() {
     glUseProgram(gGraphicsPipelineShaderProgram);
 }
 
-void drawActors ()
+void drawEntities ()
 {
     //Draw actors
     // HOW CAN WE EXPAND THIS TO BE MORE UNIVERSAL OF ALL TO-RENDER ITEMS?
@@ -108,6 +108,12 @@ void drawActors ()
     {
         actor->draw();
     }
+    
+    //Other entities
+	for (auto& entity : AssetManager::Instance().mEntities)
+	{
+		entity->draw();
+	}
 }
 
 void updateActors(std::vector<Actor_ptr>& actors, float dt)
@@ -173,7 +179,7 @@ void mainLoop(GLFWwindow* window)
         accumulatedTime += frameTime;
 
         //4 Process Input
-		//processInput(window, actors);
+		processInput(window);
 
         // 5. Fixed Timestep Updates
         // Run update logic multiple times if necessary to catch up
@@ -185,7 +191,7 @@ void mainLoop(GLFWwindow* window)
 
         // render Commands here
         preDraw();
-        drawActors();
+        drawEntities();
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------

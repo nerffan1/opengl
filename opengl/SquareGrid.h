@@ -1,10 +1,27 @@
 #pragma once
 #include "Grid.h"
 
-class squareGrid : public Grid {
+class SquareGrid: public Grid {
 public:
-	squareGrid(const int x, const int y, const float width = 1.0f, const float height = 1.0f);
+    SquareGrid(const int x, const int y, const float a, const float b);
+    ~SquareGrid() = default;
+
+    void draw() const;
+    void switchVisibility();
+
 private:
-	int xDiv, yDiv;
-	float a, b;
+    void generateGridData();
+
+    int xDiv;
+    int yDiv;
+    float a, b;
+    glm::vec3 mOrigin;
+
+    std::vector<glm::vec3> mNodes;
+    std::vector<GLuint> mIndices;
+    std::unique_ptr<GridGraphicsComponent> mGridComp;
+
+    //Logic
+    bool mUpdate = false;
 };
+

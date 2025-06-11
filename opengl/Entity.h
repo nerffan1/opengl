@@ -12,6 +12,8 @@ public:
     Component* getComponent(const std::type_info& type) const;
 
 	virtual void update(const float& dt);
+	virtual void draw() const = 0;
+
 private:
     std::vector<std::unique_ptr<Component>> m_components;
 };

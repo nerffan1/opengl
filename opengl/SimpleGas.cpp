@@ -1,5 +1,4 @@
 #include "SimpleGas.h"
-#include <GLFW/glfw3.h>
 
     simpleGas::simpleGas(const glm::vec3& boxMin, const glm::vec3& boxMax, float r, int numParticles) : 
         mBoxMin(boxMin),
@@ -11,6 +10,7 @@
         std::uniform_real_distribution<float> distX(boxMin.x, boxMax.x);
         std::uniform_real_distribution<float> distY(boxMin.y, boxMax.y);
         std::uniform_real_distribution<float> vel(-.1, .1);
+        std::uniform_real_distribution<float> acc(-.7, .7);
 
         mPoints.reserve(numParticles);  // Allocates memory only
 
@@ -18,7 +18,7 @@
             mPoints.emplace_back(
                 glm::vec3{ distX(gen), distY(gen), 0.0f },   // pos
                 glm::vec3{ vel(gen), vel(gen), 0.0f },       // vel
-                glm::vec3{ 0.0f, 0.0f, 0.0f }               // a
+                glm::vec3{ 0.0f, -1.1f, 0.0f }               // a
             );
         }
 
@@ -160,39 +160,34 @@
  * 
 */
     void simpleGas::updateColors() {
-        float minVelSq = std::numeric_limits<float>::max();
-        float maxVelSq = 0.0f;
-
-        for (const auto& p : mPoints) {
-            float velSq = p.vel.x * p.vel.x + p.vel.y * p.vel.y;
-            minVelSq = std::min(minVelSq, velSq);
-            maxVelSq = std::max(maxVelSq, velSq);
-        }
-
-        float velRange = maxVelSq - minVelSq;
-        if (velRange < 1e-6f) {
-            for (auto& p : mPoints) {
-                p.color = glm::vec3(0.0f, 1.0f, 0.0f);  // Green for all
-            }
-            return;
-        }
+        // Maximum velocity intensity (sum of absolute velocities) - adjust as needed
+        float maxVelocityIntensity = 1.0f;  // Set this to your desired maximum
 
         for (auto& p : mPoints) {
-            float velSq = p.vel.x * p.vel.x + p.vel.y * p.vel.y;
-            float t = (velSq - minVelSq) / velRange;
+            // Calculate velocity intensity as sum of absolute velocities
+            float velocityIntensity = std::abs(p.vel.x) + std::abs(p.vel.y);
 
-            // Smooth color transition using smoothstep-like function
-            t = t * t * (3.0f - 2.0f * t);  // Smoothstep interpolation
+            // Normalize to [0, 1] range
+            float t = std::min(velocityIntensity / maxVelocityIntensity, 1.0f);
 
-            if (t < 0.5f) {
-                // Green to Yellow (0.0 to 0.5)
-                float localT = t * 2.0f;  // Map [0, 0.5] to [0, 1]
+            // Apply smoothstep for smooth transitions
+            t = t * t * (3.0f - 2.0f * t);
+
+            // Color transitions: Green -> Yellow -> Orange -> Red
+            if (t < 0.333f) {
+                // Green to Yellow (0.0 to 0.333)
+                float localT = t * 3.0f;  // Map [0, 0.333] to [0, 1]
                 p.color = glm::vec3(localT, 1.0f, 0.0f);
             }
+            else if (t < 0.667f) {
+                // Yellow to Orange (0.333 to 0.667)
+                float localT = (t - 0.333f) * 3.0f;  // Map [0.333, 0.667] to [0, 1]
+                p.color = glm::vec3(1.0f, 1.0f - 0.5f * localT, 0.0f);  // Yellow (1,1,0) to Orange (1,0.5,0)
+            }
             else {
-                // Yellow to Red (0.5 to 1.0)
-                float localT = (t - 0.5f) * 2.0f;  // Map [0.5, 1] to [0, 1]
-                p.color = glm::vec3(1.0f, 1.0f - localT, 0.0f);
+                // Orange to Red (0.667 to 1.0)
+                float localT = (t - 0.667f) * 3.0f;  // Map [0.667, 1] to [0, 1]
+                p.color = glm::vec3(1.0f, 0.5f - 0.5f * localT, 0.0f);  // Orange (1,0.5,0) to Red (1,0,0)
             }
         }
     }
