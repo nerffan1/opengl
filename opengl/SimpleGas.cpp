@@ -134,7 +134,7 @@
 
             // Y-axis boundary collision
             if (p.pos.y < mBoxMin.y) {
-                p.vel.y *= -1;  // Reflect velocity
+                p.vel.y *= -0.9;  // Reflect velocity
                 p.pos.y = mBoxMin.y + mR;  // Position correction: move particle inside by radius
             }
             if (p.pos.y > mBoxMax.y) {

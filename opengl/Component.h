@@ -9,7 +9,7 @@ public:
 
     // Core lifecycle methods
     virtual void initialize() = 0;
-    virtual void update(float deltaTime) = 0;
+    virtual void update(const float& deltaTime) = 0;
     virtual void destroy() = 0;
 
     // Transformation hierarchy

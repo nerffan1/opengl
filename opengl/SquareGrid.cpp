@@ -1,8 +1,9 @@
 #include "SquareGrid.h"
 
 SquareGrid::SquareGrid(const int x, const int y, const float a, const float b)
-	: xDiv(x), yDiv(y), a(a), b(b), mOrigin(-1.0f, -1.0f, 0.0f)
+	: xDiv(x), yDiv(y), a(a), b(b)
 {
+    mOrigin = glm::vec3(-a/2, -b/2, 0.0f);
     mGridComp = std::make_unique<GridGraphicsComponent>();
     generateGridData();
     mGridComp->initialize();
@@ -24,7 +25,7 @@ void SquareGrid::generateGridData() {
     // Generate grid vertices
     for (int j = yDiv; j >= 0; --j) {  // Top to bottom (yDiv down to 0)
         for (int i = 0; i <= xDiv; ++i) {  // Left to right (0 to xDiv)
-            glm::vec3 node(i * x_stride, j * y_stride, 0.0f);
+            glm::vec3 node(mOrigin.x + i * x_stride, mOrigin.y + j * y_stride , 0.0f);
             mNodes.emplace_back(node);
         }
     }

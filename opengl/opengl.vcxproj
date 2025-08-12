@@ -116,6 +116,7 @@
       <Optimization>MaxSpeed</Optimization>
       <BuildStlModules>true</BuildStlModules>
       <AdditionalIncludeDirectories>C:\Users\angel\source\repos\opengl\opengl\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -147,9 +148,12 @@
     <ClCompile Include="..\..\..\..\..\..\glad\src\glad.c" />
     <ClCompile Include="Actor.cpp" />
     <ClCompile Include="AssetManager.cpp" />
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="GridComp.cpp" />
+    <ClCompile Include="input.cpp" />
+    <ClCompile Include="InputComp.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="SimpleGas.cpp" />
@@ -161,12 +165,14 @@
   <ItemGroup>
     <ClInclude Include="Actor.h" />
     <ClInclude Include="AssetManager.h" />
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="GphxComp.h" />
     <ClInclude Include="GridComp.h" />
     <ClInclude Include="Grid.h" />
+    <ClInclude Include="InputComp.h" />
     <ClInclude Include="SquareGrid.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="SimpleGas.h" />

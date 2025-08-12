@@ -72,6 +72,15 @@
     <ClCompile Include="GridComp.cpp">
       <Filter>Source Files\Grids</Filter>
     </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="InputComp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="input.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\simple.frag">
@@ -84,9 +93,6 @@
   <ItemGroup>
     <ClInclude Include="Triangle.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="input.h">
-      <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="SimpleGas.h">
       <Filter>Header Files</Filter>
@@ -120,6 +126,15 @@
     </ClInclude>
     <ClInclude Include="Actor.h">
       <Filter>Header Files\Assets</Filter>
+    </ClInclude>
+    <ClInclude Include="InputComp.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="input.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

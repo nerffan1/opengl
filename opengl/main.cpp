@@ -2,6 +2,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
+#include "AssetManager.h"
 #include "Actor.h"
 #include "Triangle.h"
 #include "input.h"
@@ -11,20 +12,24 @@
 #include <chrono>
 #include "window.h"
 #include "Shader.h"
-#include "AssetManager.h"
 
+//Use dedicated GPU on Windows
+#define WIN32_LEAN_AND_MEAN
+#define NOMINMAX
+#ifdef _WIN32
+#include <Windows.h>  // Wincon.h is typically included via Windows.h
+extern "C" {
+    __declspec(dllexport) DWORD NvOptimusEnablement = 0x00000001; // Optimus: force switch to discrete GPU
+}
+#endif
 
 glm::vec3 aa;
-//Actors
-using Actor_ptr = std::unique_ptr<Actor> ;
-using Actor_vec = std::vector<Actor_ptr>;
 //Shaders
 using shader_ptr = std::unique_ptr<shader>;
 using shader_vec = std::vector<shader_ptr>;
 //Clock
 using Clock = std::chrono::steady_clock; // Or high_resolution_clock
 
-void drawActors(std::vector<Actor_ptr> &actors);
 void mainLoop(GLFWwindow* window);
 void vertexSpecify();
 
@@ -56,18 +61,16 @@ GLuint indices[] = {  // note that we start from 0!
     1, 2, 3    // second triangle
 };
 
-void createGraphicsPipeline(shader_vec& shaders)
+void createGraphicsPipeline()
 {
-    shaders.push_back(std::make_unique<shader>("Shaders/simple.vert", "Shaders/simple.frag"));
-    gGraphicsPipelineShaderProgram = shaders[0]->mProgramObject;
+	gGraphicsPipelineShaderProgram = AssetManager::Instance().GetShader("simple");
 }
 
 int main()
 {
     GLFWwindow* window = initWindow();
-
-    shader_vec shaders;
-    createGraphicsPipeline(shaders);
+    AssetManager::Instance().Initiate();
+    createGraphicsPipeline();
 
     // glad: load all OpenGL function pointers
     // ---------------------------------------
@@ -116,26 +119,9 @@ void drawEntities ()
 	}
 }
 
-void updateActors(std::vector<Actor_ptr>& actors, float dt)
-{
-    for (auto& actor : actors)
-    {
-        actor->update(dt);
-    }
-}
-
-void updateVertexData() {
-    // Modify your vertices array here, for example:
-    //vertices[4] = sin(glfwGetTime()) * 0.2f; // Move a vertex based on time
-
-    // Update the buffer data without recreating it
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
-    // Alternative: glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
-}
-
 void updateSystem(const float& dt)
 {
+	AssetManager::Instance().mCamera.Update(dt);
 	for (auto& asset : AssetManager::Instance().mEntities)
 	{
 		asset->update(dt); // Assuming a fixed timestep of 16ms (60 FPS)
@@ -151,7 +137,6 @@ void mainLoop(GLFWwindow* window)
 {
 
     //Create Assets
-    AssetManager::Instance().PopulateSystem();
 
     auto lastT = std::chrono::steady_clock::now(); // Use steady_clock!
 
@@ -179,7 +164,12 @@ void mainLoop(GLFWwindow* window)
         accumulatedTime += frameTime;
 
         //4 Process Input
-		processInput(window);
+		//processInput(window);
+        //Call input singleton
+		Input::Instance().processInputt(window);
+
+
+        preDraw();
 
         // 5. Fixed Timestep Updates
         // Run update logic multiple times if necessary to catch up
@@ -190,7 +180,6 @@ void mainLoop(GLFWwindow* window)
         }
 
         // render Commands here
-        preDraw();
         drawEntities();
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)

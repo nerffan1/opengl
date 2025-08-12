@@ -11,7 +11,7 @@ public:
     ~GridGraphicsComponent() = default;
 
     void initialize() override;
-    void update(float deltaTime) override {}
+    void update(const float& deltaTime) override {}
     void destroy() override;
 
     void setupGrid(const std::vector<glm::vec3>& vertices, const std::vector<GLuint>& indices);
