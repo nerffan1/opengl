@@ -1,14 +1,16 @@
 #pragma once
 #include <glad/glad.h>
 #include <vector>
-class Actor
+#include "Component.h"
+#include "Entity.h"
+
+class Actor : public Entity
 {
 public:
 	Actor();
-	virtual void draw();
 	virtual void vertexSpecify() = 0;
-	virtual void update(const float& dt) = 0;
 	virtual void move(GLfloat x, GLfloat y, GLfloat z = 0.0f) = 0;
+	virtual void draw() const = 0;
 
 protected:
 	std::vector<GLfloat> vertices;

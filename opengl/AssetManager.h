@@ -15,7 +15,7 @@
 using shader_map = std::unordered_map<std::string, std::unique_ptr<shader>>;
 using Actor_ptr = std::unique_ptr<Actor> ;
 using Actor_vec = std::vector<Actor_ptr>;
-
+ 
 class AssetManager
 {
 public:

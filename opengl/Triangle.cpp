@@ -17,7 +17,6 @@ Triangle::Triangle()
 }
 Triangle::Triangle(std::vector<vec3> colour)
 {
-	Triangle();
 	color = colour;
 } 
 

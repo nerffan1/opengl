@@ -24,14 +24,11 @@ extern "C" {
 #endif
 
 glm::vec3 aa;
-//Shaders
-using shader_ptr = std::unique_ptr<shader>;
-using shader_vec = std::vector<shader_ptr>;
+
 //Clock
 using Clock = std::chrono::steady_clock; // Or high_resolution_clock
 
 void mainLoop(GLFWwindow* window);
-void vertexSpecify();
 
 // settings/globals
 extern const unsigned int SCR_WIDTH;
@@ -69,7 +66,7 @@ void createGraphicsPipeline()
 int main()
 {
     GLFWwindow* window = initWindow();
-    AssetManager::Instance().Initiate();
+    AssetManager::Instance().Initiate(); //Create assets
     createGraphicsPipeline();
 
     // glad: load all OpenGL function pointers
@@ -80,12 +77,9 @@ int main()
         return -1;
     }
 
-    // RENDER loop (MAIN LOOP)
-    // This function return true only when the user closes the window (inversion?).
     mainLoop(window);
 
-    // glfw: terminate, clearing all previously allocated GLFW resources.
-    // ------------------------------------------------------------------
+    // Clear all previously allocated GLFW resources.
     glfwTerminate();
     return 0;
 }
@@ -103,16 +97,15 @@ void preDraw() {
     glUseProgram(gGraphicsPipelineShaderProgram);
 }
 
-void drawEntities ()
-{
-    //Draw actors
-    // HOW CAN WE EXPAND THIS TO BE MORE UNIVERSAL OF ALL TO-RENDER ITEMS?
+void Draw () {
+
+    // Draw actors
     for (auto& actor : AssetManager::Instance().mActors)
     {
         actor->draw();
     }
     
-    //Other entities
+    //Draw Entities
 	for (auto& entity : AssetManager::Instance().mEntities)
 	{
 		entity->draw();
@@ -152,7 +145,7 @@ void mainLoop(GLFWwindow* window)
     while (!glfwWindowShouldClose(window))
     {
 
-        // 1. Calculate Real Frame Time (dt for the rendering frame)
+        // 1. Calculate Frame Time (dt for the rendering frame)
         auto currentTime = Clock::now();
         float frameTime = std::chrono::duration<float>(currentTime - previousTime).count();
         previousTime = currentTime;
@@ -164,9 +157,7 @@ void mainLoop(GLFWwindow* window)
         accumulatedTime += frameTime;
 
         //4 Process Input
-		//processInput(window);
-        //Call input singleton
-		Input::Instance().processInputt(window);
+		Input::Instance().processInputt(window); //singleton input processing
 
 
         preDraw();
@@ -180,38 +171,12 @@ void mainLoop(GLFWwindow* window)
         }
 
         // render Commands here
-        drawEntities();
+        Draw();
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
         glfwSwapBuffers(window);
     }
 }
-
-void vertexSpecify()
-{
-    //  GPU Setup
-    // VAOs
-    // Create Vertex Array Object
-    glGenVertexArrays(1, &vao); //Create "object name" identifier
-    glBindVertexArray(vao);
-
-    //VBOs
-    // Create a Vertex Buffer Object and copy the vertex data to it
-    // According to Anton's OpenGL tutorials, this is 
-    glGenBuffers(1, &vbo);//Allocated memory gets actually copied into bound buffer memory (initialized)
-    glBindBuffer(GL_ARRAY_BUFFER, vbo); //Allocate storage and created object, to hold vertex data
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW); //Configures currently bound buffer and gets name
-
-    // "To associate data going into our vertex shader, which is the entrance all
-    // vertex data take to get processed by OpenGL, we need to connect our shader 'in' "
-    // Vertex Attribute Array
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, (void*)0);
-
-    glBindVertexArray(0);
-    glDisableVertexAttribArray(0);
-};
-
 
 

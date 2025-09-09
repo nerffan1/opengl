@@ -19,7 +19,7 @@ class simpleGas : public Actor
 {
 public:
 	simpleGas(const glm::vec3& boxMin, const glm::vec3& boxMax, float r, int numParticles = 1000);
-	void draw() override;
+	void draw() const override;
 	void vertexSpecify() override;
 	void update(const float& dt) override;
 	void move(GLfloat x, GLfloat y, GLfloat z = 0.0f) {};

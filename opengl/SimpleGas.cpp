@@ -28,7 +28,7 @@
 
     }
 
-    void simpleGas::draw() {
+    void simpleGas::draw() const {
         glBindVertexArray(mVAO);
         glDrawArrays(GL_POINTS, 0, mPoints.size());
     }

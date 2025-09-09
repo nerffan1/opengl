@@ -6,7 +6,7 @@ Actor::Actor()
 {
 }
 
-void Actor::draw()
+void Actor::draw() const
 {
     glBindVertexArray(vao);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);

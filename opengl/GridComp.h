@@ -26,5 +26,3 @@ private:
     bool mInitialized = false;
     bool mIsVisible = true;
 };
-
-// GridGraphicsComponent.cpp
