@@ -52,7 +52,6 @@ public:
 private:
     static AssetManager instance;
 
-
     // Grid Methods
     void CreateGrid(const float& width);
     //Actor Methods

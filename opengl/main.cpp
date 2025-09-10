@@ -67,6 +67,8 @@ int main()
 {
     GLFWwindow* window = initWindow();
     AssetManager::Instance().Initiate(); //Create assets
+    Input::Instance(); //Initialize 
+	Input::Instance().SetWindow(window); // Window for input handling
     createGraphicsPipeline();
 
     // glad: load all OpenGL function pointers
@@ -117,12 +119,12 @@ void updateSystem(const float& dt)
 	AssetManager::Instance().mCamera.Update(dt);
 	for (auto& asset : AssetManager::Instance().mEntities)
 	{
-		asset->update(dt); // Assuming a fixed timestep of 16ms (60 FPS)
+		asset->update(dt);
 	}
 
 	for (auto& asset : AssetManager::Instance().mActors)
 	{
-		asset->update(dt); // Assuming a fixed timestep of 16ms (60 FPS)
+		asset->update(dt);
 	}
 }
 
@@ -157,7 +159,7 @@ void mainLoop(GLFWwindow* window)
         accumulatedTime += frameTime;
 
         //4 Process Input
-		Input::Instance().processInputt(window); //singleton input processing
+		Input::Instance().processInputt(); //singleton input processing
 
 
         preDraw();

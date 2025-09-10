@@ -1,20 +1,15 @@
 #include "input.h"
 
-Input Input::instance;
-
-Input::Input()
-{
-}
-
-void Input::processInputt(GLFWwindow* window)
+void Input::processInputt()
 {
     glfwPollEvents();
     for (int i = 0; i <= GLFW_KEY_LAST; i++) {
-        mCurrKeys[i] = (glfwGetKey(window, i) == GLFW_PRESS);
+        mCurrKeys[i] = (glfwGetKey(mWindow, i) == GLFW_PRESS);
     }
 }
 
 Input& Input::Instance()
 {
+    static Input instance; // function-local static: initialized on first use
     return instance;
 }

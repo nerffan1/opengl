@@ -40,15 +40,19 @@ extern float b;
 class Input
 {
 public:
-	Input();
-	void processInputt(GLFWwindow* window);
+	static Input& Instance();
+	void processInputt();
 	const bool* getCurrKeys() const { return mCurrKeys; }
 	const bool* getPrevKeys() const { return mPrevKeys; }
-	static Input& Instance();
+
+	// Window
+	void CloseWindow() const;
+	void SetWindow(GLFWwindow* window) { mWindow = window;}
 
 private:
-	static Input instance;
+	// removed: static Input instance; use function-local static in Instance()
 	//Decision of arrays thanks to Qwen3 Coder
 	bool mCurrKeys[GLFW_KEY_LAST + 1];
 	bool mPrevKeys[GLFW_KEY_LAST + 1];
+	GLFWwindow* mWindow = nullptr;
 };

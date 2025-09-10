@@ -17,6 +17,7 @@ void AssetManager::Initiate()
 void AssetManager::CreateGrid(const float& width)
 {
 	mEntities.push_back(std::make_unique<SquareGrid>(8,8,width,width));
+
 }
 
 void AssetManager::CreateGas(const float& width)

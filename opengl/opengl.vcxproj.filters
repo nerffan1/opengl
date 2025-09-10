@@ -31,6 +31,9 @@
     <Filter Include="Source Files\Assets">
       <UniqueIdentifier>{f89e48ff-497b-4855-8d04-aa79bddbe419}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Input">
+      <UniqueIdentifier>{159bee02-a7b7-4773-acc1-84e5a79cfcee}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -127,14 +130,14 @@
     <ClInclude Include="Actor.h">
       <Filter>Header Files\Assets</Filter>
     </ClInclude>
-    <ClInclude Include="InputComp.h">
-      <Filter>Header Files\Components</Filter>
-    </ClInclude>
     <ClInclude Include="Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="input.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="InputComp.h">
+      <Filter>Header Files\Input</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
