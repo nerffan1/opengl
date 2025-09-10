@@ -9,4 +9,7 @@ Grid::Grid():
 void Grid::update(const float& dt)
 {
 	mGridComp->update(dt);
+	for (auto& comp : mComponents) {
+		comp->update(dt);
+	}
 }

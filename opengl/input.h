@@ -46,7 +46,7 @@ public:
 	const bool* getPrevKeys() const { return mPrevKeys; }
 
 	// Window
-	void CloseWindow() const;
+	void CloseWindow() const { glfwSetWindowShouldClose(mWindow, true);};
 	void SetWindow(GLFWwindow* window) { mWindow = window;}
 
 private:
