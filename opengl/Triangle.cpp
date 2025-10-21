@@ -61,7 +61,7 @@ void Triangle::colorUpdate()
 
 }
 
-void Triangle::move(GLfloat x, GLfloat y, GLfloat z = 0.0f)
+void Triangle::move(GLfloat x, GLfloat y, GLfloat z)
 {
 	vertices[0] += x;
 	vertices[1] += y;
@@ -74,5 +74,12 @@ void Triangle::move(GLfloat x, GLfloat y, GLfloat z = 0.0f)
 	vertices[6] += x;
 	vertices[7] += y;
 	vertices[8] += z;
+}
+
+void Triangle::draw() const
+{
+    glBindVertexArray(vao);
+    glDrawArrays(GL_TRIANGLES, 0, vertCount);
+    glBindVertexArray(0);
 }
 

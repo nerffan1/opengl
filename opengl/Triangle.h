@@ -11,6 +11,7 @@ public:
 	Triangle(std::vector<glm::vec3> colour);
 	void vertexSpecify() override;
 	void update(const float& dt) override;
+	void draw() const override;
 	
 	//Movement
 	void move(GLfloat x, GLfloat y, GLfloat z);
