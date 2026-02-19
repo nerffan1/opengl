@@ -10,24 +10,9 @@ void AssetManager::Initiate()
 
     //Create Box
     float width = 100.0f;
-	CreateGas(width);
-    CreateGrid(width);
-}
-
-void AssetManager::CreateGrid(const float& width)
-{
+	mActors.push_back(mGasFactory.Create());
+	mActors.push_back(std::make_unique<Triangle>());
 	mEntities.push_back(std::make_unique<SquareGrid>(8,8,width,width));
-	mEntities.back()->addComponent(std::make_unique<Input_Grid>());
-
-}
-
-void AssetManager::CreateGas(const float& width)
-{
-    mActors.push_back(std::make_unique<simpleGas>(
-        glm::vec3(-width/2, -width/2, 0.0f),
-        glm::vec3(width/2, width/2, 0.0f),
-        8,
-        3000));
 }
 
 void AssetManager::CreateCamera()

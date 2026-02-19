@@ -1,7 +1,6 @@
 #pragma once
 #include "Actor.h"
 #include <glad/glad.h>
-#include <GLFW/glfw3.h>
 #include <random>
 #include <vector>
 #include <iostream>

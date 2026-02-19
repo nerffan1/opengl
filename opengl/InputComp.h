@@ -2,6 +2,9 @@
 #include "input.h"
 #include "Component.h"
 
+// forward declare to avoid including headers that pull in OpenGL headers here
+class simpleGas;
+
 class InputComp : public Component
 {
     // Core lifecycle methods
@@ -48,6 +51,38 @@ public:
             r = std::max(r - colorStep, 0.0f);
         }
     }
+    void destroy() override {}
+};
+
+class Input_Gas : public InputComp
+{
+public:
+    Input_Gas() = default;
+    void initialize() override {}
+    void update(const float& deltaTime) override {
+        // Move/act on gas using centralized input state
+        // A: move left
+        if (Input::Instance().getCurrKeys()[GLFW_KEY_A]) {
+            // TODO: move gas left (e.g. adjust velocity or call actor->move)
+        }
+        // D: move right
+        if (Input::Instance().getCurrKeys()[GLFW_KEY_D]) {
+            // TODO: move gas right
+        }
+        // SPACE: some action (e.g. apply impulse)
+        if (Input::Instance().getCurrKeys()[GLFW_KEY_SPACE]) {
+            // TODO: perform space action on gas
+        }
+    }
+    void destroy() override {}
+};
+
+class Input_Triangle : public InputComp
+{
+public:
+    Input_Triangle() = default;
+    void initialize() override {}
+    void update(const float& deltaTime) override {}
     void destroy() override {}
 };
 

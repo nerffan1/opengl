@@ -7,11 +7,12 @@
 #include <memory>
 #include "Actor.h"
 #include "Shader.h"
-#include "SimpleGas.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <unordered_map>
 #include "InputComp.h"
+#include "ActorFactory.h"
+#include "Triangle.h"
 
 using shader_map = std::unordered_map<std::string, std::unique_ptr<shader>>;
 using Actor_ptr = std::unique_ptr<Actor> ;
@@ -53,12 +54,10 @@ public:
 private:
     static AssetManager instance;
 
-    // Grid Methods
-    void CreateGrid(const float& width);
-    //Actor Methods
-    void CreateGas(const float& width);
     //Camera Methods
     void CreateCamera();
     //Shaders
     void CreateShaders();
+    //Factories
+	SimpleGasFactory mGasFactory;
 };

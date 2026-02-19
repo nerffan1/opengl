@@ -34,6 +34,18 @@
     <Filter Include="Header Files\Input">
       <UniqueIdentifier>{159bee02-a7b7-4773-acc1-84e5a79cfcee}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Input">
+      <UniqueIdentifier>{cbbcedfc-f457-4041-9266-6113461348f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Actors">
+      <UniqueIdentifier>{d0cc9c3a-9d2c-4809-bfa5-bc7164c7e260}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Actors">
+      <UniqueIdentifier>{ef25667d-9998-4d82-b08c-d6f4d3bf3601}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Graphics">
+      <UniqueIdentifier>{7ce95845-e4ca-498a-8919-848cb14c8bae}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -42,22 +54,10 @@
     <ClCompile Include="..\..\..\..\..\..\glad\src\glad.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Triangle.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SimpleGas.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="window.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="window.h">
-      <Filter>Header Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Entity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SquareGrid.cpp">
@@ -78,11 +78,26 @@
     <ClCompile Include="Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="InputComp.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="input.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="InputComp.cpp">
+      <Filter>Source Files\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Triangle.cpp">
+      <Filter>Source Files\Actors</Filter>
+    </ClCompile>
+    <ClCompile Include="SimpleGas.cpp">
+      <Filter>Source Files\Actors</Filter>
+    </ClCompile>
+    <ClCompile Include="ActorFactory.cpp">
+      <Filter>Source Files\Actors</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Source Files\Assets</Filter>
+    </ClCompile>
+    <ClCompile Include="window.h">
+      <Filter>Header Files\Graphics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -94,15 +109,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Triangle.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SimpleGas.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Shader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -130,14 +136,26 @@
     <ClInclude Include="Actor.h">
       <Filter>Header Files\Assets</Filter>
     </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="input.h">
       <Filter>Header Files\Input</Filter>
     </ClInclude>
     <ClInclude Include="InputComp.h">
       <Filter>Header Files\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="SimpleGas.h">
+      <Filter>Header Files\Actors</Filter>
+    </ClInclude>
+    <ClInclude Include="Triangle.h">
+      <Filter>Header Files\Actors</Filter>
+    </ClInclude>
+    <ClInclude Include="ActorFactory.h">
+      <Filter>Header Files\Actors</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Header Files\Assets</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>Header Files\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

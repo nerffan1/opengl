@@ -3,6 +3,7 @@
 #include <vector>
 #include "glad/glad.h"
 #include <glm/glm.hpp>
+#include "InputComp.h"
 
 class Triangle : public Actor
 {

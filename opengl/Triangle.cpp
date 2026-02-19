@@ -4,9 +4,9 @@ using namespace glm;
 Triangle::Triangle() 
 {
 	vertices = std::vector<GLfloat>({
-	-0.5f,  0.5f, 0.0f, // Top-left
-	 0.5f,  0.5f, 0.0f, // Top-right
-	 0.5f, -0.5f, 0.0f, // Bottom-right
+	-20.0f,  20.0f, 0.0f, // Top-left
+	 20.0f,  20.0f, 0.0f, // Top-right
+	 20.0f, -20.0f, 0.0f, // Bottom-right
 	});
 	color = {
 		vec3(1.0f, 0.0f, 0.0f),
@@ -14,6 +14,7 @@ Triangle::Triangle()
 		vec3(0.0f, 0.0f, 1.0f)};
 	vertexSpecify();
 	vertCount = 3;
+	addComponent(std::make_unique<Input_Triangle>());
 }
 Triangle::Triangle(std::vector<vec3> colour)
 {
