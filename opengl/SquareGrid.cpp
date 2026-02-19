@@ -8,6 +8,9 @@ SquareGrid::SquareGrid(const int x, const int y, const float a, const float b)
     generateGridData();
     mGridComp->initialize();
     mGridComp->setupGrid(mNodes, mIndices);
+
+    //Components
+    addComponent(std::make_unique<Input_Grid>());
 }
 
 void SquareGrid::generateGridData() {

@@ -1,5 +1,7 @@
 #pragma once
 #include "Grid.h"
+#include <memory>
+#include "InputComp.h"
 
 class SquareGrid: public Grid {
 public:
