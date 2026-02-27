@@ -179,6 +179,7 @@
     <ClInclude Include="Shader.h" />
     <ClInclude Include="SimpleGas.h" />
     <ClInclude Include="input.h" />
+    <ClInclude Include="TransComp.h" />
     <ClInclude Include="Triangle.h" />
   </ItemGroup>
   <ItemGroup>

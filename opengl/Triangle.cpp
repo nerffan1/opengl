@@ -4,7 +4,7 @@ using namespace glm;
 Triangle::Triangle() 
 {
 	vertices = std::vector<GLfloat>({
-	-20.0f,  20.0f, 0.0f, // Top-left
+	-26.0f,  20.0f, 0.0f, // Top-left
 	 20.0f,  20.0f, 0.0f, // Top-right
 	 20.0f, -20.0f, 0.0f, // Bottom-right
 	});
@@ -46,6 +46,7 @@ void Triangle::vertexSpecify()
 
 void Triangle::update(const float& dt)
 {
+
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBufferSubData(GL_ARRAY_BUFFER, 0, vertices.size() * sizeof(float), vertices.data());
 	colorUpdate();

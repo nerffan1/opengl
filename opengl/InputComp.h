@@ -4,6 +4,7 @@
 
 // forward declare to avoid including headers that pull in OpenGL headers here
 class simpleGas;
+class Triangle;
 
 class InputComp : public Component
 {
@@ -63,7 +64,6 @@ public:
         // Move/act on gas using centralized input state
         // A: move left
         if (Input::Instance().getCurrKeys()[GLFW_KEY_A]) {
-            // TODO: move gas left (e.g. adjust velocity or call actor->move)
         }
         // D: move right
         if (Input::Instance().getCurrKeys()[GLFW_KEY_D]) {
@@ -81,8 +81,8 @@ class Input_Triangle : public InputComp
 {
 public:
     Input_Triangle() = default;
-    void initialize() override {}
-    void update(const float& deltaTime) override {}
-    void destroy() override {}
+    void initialize() override;
+    void update(const float& deltaTime) override;
+    void destroy() override;
 };
 
